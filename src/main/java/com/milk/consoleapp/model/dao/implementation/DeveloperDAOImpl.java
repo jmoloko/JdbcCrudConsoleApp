@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class DeveloperDAOImpl implements DeveloperDAO {
 
-    private final Connection connection = DBConnector.getConnection();
+    private final Connection connection = DBConnector.getConnector().getConnect();
 
 
     @Override

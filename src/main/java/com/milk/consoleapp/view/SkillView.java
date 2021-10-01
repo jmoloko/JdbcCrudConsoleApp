@@ -1,9 +1,11 @@
 package com.milk.consoleapp.view;
 
+import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.controller.SkillController;
 import com.milk.consoleapp.model.dao.implementation.SkillDAOImpl;
 import com.milk.consoleapp.model.entity.Skill;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 
@@ -36,7 +38,7 @@ public class SkillView {
 
         String choice = "";
 
-        while(!(choice.toLowerCase().equals("e"))) {
+        while(!(choice.equalsIgnoreCase("e"))) {
             System.out.print("          Select option: ");
             choice = new Scanner(System.in).next();
             switch (choice.toLowerCase()) {
@@ -71,6 +73,11 @@ public class SkillView {
                     skillMenu();
                     break;
             }
+        }
+        try {
+            DBConnector.getConnector().getConnect().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

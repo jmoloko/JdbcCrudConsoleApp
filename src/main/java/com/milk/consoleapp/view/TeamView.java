@@ -1,11 +1,13 @@
 package com.milk.consoleapp.view;
 
+import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.controller.DeveloperController;
 import com.milk.consoleapp.controller.TeamController;
 import com.milk.consoleapp.model.entity.Developer;
 import com.milk.consoleapp.model.entity.Skill;
 import com.milk.consoleapp.model.entity.Team;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,6 +73,12 @@ public class TeamView {
                     teamMenu();
                     break;
             }
+        }
+
+        try {
+            DBConnector.getConnector().getConnect().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

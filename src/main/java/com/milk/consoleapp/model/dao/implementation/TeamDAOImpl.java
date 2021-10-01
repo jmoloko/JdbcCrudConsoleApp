@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class TeamDAOImpl implements TeamDAO {
 
-    private final Connection connection = DBConnector.getConnection();
+    private final Connection connection = DBConnector.getConnector().getConnect();
 
     @Override
     public List<Team> getAll() {

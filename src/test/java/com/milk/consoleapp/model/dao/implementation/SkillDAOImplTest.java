@@ -20,21 +20,21 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class SkillDAOImplTest {
 
-    @Mock
-    private SkillDAOImpl skillDAO;
-
-    @InjectMocks
-    private SkillController controller;
-
-    @Test
-    public void testGetByID() {
-
-        when(skillDAO.getById(10)).thenReturn(new Skill(10, "Test"));
-        assertEquals("Test", controller.viewSkillByID(10).getName());
-        controller.viewSkillByID(1);
-        verify(skillDAO).getById(1);
-
-    }
+//    @Mock
+//    private SkillDAOImpl skillDAO;
+//
+//    @InjectMocks
+//    private SkillController controller;
+//
+//    @Test
+//    public void testGetByID() {
+//
+//        when(skillDAO.getById(10)).thenReturn(new Skill(10, "Test"));
+//        assertEquals("Test", controller.viewSkillByID(10).getName());
+//        controller.viewSkillByID(1);
+//        verify(skillDAO).getById(1);
+//
+//    }
 //
 //
 //    @Test

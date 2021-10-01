@@ -1,12 +1,14 @@
 package com.milk.consoleapp.view;
 
 
+import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.controller.DeveloperController;
 import com.milk.consoleapp.controller.SkillController;
 import com.milk.consoleapp.model.dao.implementation.SkillDAOImpl;
 import com.milk.consoleapp.model.entity.Developer;
 import com.milk.consoleapp.model.entity.Skill;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -74,6 +76,12 @@ public class DeveloperView {
                     developerMenu();
                     break;
             }
+        }
+
+        try {
+            DBConnector.getConnector().getConnect().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

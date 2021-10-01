@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SkillDAOImpl implements SkillDAO {
 
-    private final Connection connection = DBConnector.getConnection();
+    private final Connection connection = DBConnector.getConnector().getConnect();
 
     @Override
     public List<Skill> getAll() {
