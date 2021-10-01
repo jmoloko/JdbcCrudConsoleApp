@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="1" author="milk">
+        <tagDatabase tag="create_skill"/>
+    </changeSet>
+    <changeSet id="1.1" author="milk">
+        <sql>
+            CREATE TABLE skill
+            (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL
+            );
+        </sql>
+        <rollback>
+            <sql>
+                DROP TABLE skill;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="milk">
+        <tagDatabase tag="insert_skill"/>
+    </changeSet>
+    <changeSet id="2.1" author="milk">
+        <sql>
+            INSERT INTO skill
+            VALUES
+            (DEFAULT, 'Java'),
+            (DEFAULT, 'C#'),
+            (DEFAULT, 'Ruby'),
+            (DEFAULT, 'PHP');
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM skill;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="milk">
+        <tagDatabase tag="create_developer"/>
+    </changeSet>
+    <changeSet id="3.1" author="milk">
+        <sql>
+            CREATE TABLE developer
+            (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            firstName VARCHAR(100) NOT NULL,
+            lastName VARCHAR(100) NOT NULL
+            );
+        </sql>
+        <rollback>
+            <sql>
+                DROP TABLE developer;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="4" author="milk">
+        <tagDatabase tag="insert_developer"/>
+    </changeSet>
+    <changeSet id="4.1" author="milk">
+        <sql>
+            INSERT INTO developer
+            VALUES
+            (DEFAULT, 'John', 'Doe'),
+            (DEFAULT, 'Mike', 'Foe');
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM developer;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="5" author="milk">
+        <tagDatabase tag="create_dev_skill"/>
+    </changeSet>
+    <changeSet id="5.1" author="milk">
+        <sql>
+            CREATE TABLE dev_skill
+            (
+            dev_id INT NOT NULL,
+            sk_id INT NOT NULL,
+            PRIMARY KEY (dev_id, sk_id),
+            FOREIGN KEY (dev_id)
+            REFERENCES developer (id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+            FOREIGN KEY (sk_id)
+            REFERENCES skill (id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+            );
+        </sql>
+        <rollback>
+            <sql>
+                DROP TABLE dev_skill;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="6" author="milk">
+        <tagDatabase tag="insert_dev_skill"/>
+    </changeSet>
+    <changeSet id="6.1" author="milk">
+        <sql>
+            INSERT INTO dev_skill
+            VALUES
+            (1, 1),
+            (1, 4),
+            (2, 2),
+            (2, 3);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM dev_skill;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="7" author="milk">
+        <tagDatabase tag="create_team"/>
+    </changeSet>
+    <changeSet id="7.1" author="milk">
+        <sql>
+            CREATE TABLE team
+            (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL
+            );
+        </sql>
+        <rollback>
+            <sql>
+                DROP TABLE team;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="8" author="milk">
+        <tagDatabase tag="insert_team"/>
+    </changeSet>
+    <changeSet id="8.1" author="milk">
+        <sql>
+            INSERT INTO team
+            VALUES
+            (DEFAULT, 'Banking System');
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM team;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="9" author="milk">
+        <tagDatabase tag="create_tm_dev"/>
+    </changeSet>
+    <changeSet id="9.1" author="milk">
+        <sql>
+            CREATE TABLE tm_dev
+            (
+            tm_id INT NOT NULL,
+            dev_id INT NOT NULL,
+            PRIMARY KEY (tm_id, dev_id),
+            FOREIGN KEY (tm_id)
+            REFERENCES team (id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+            FOREIGN KEY (dev_id)
+            REFERENCES developer (id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+            );
+        </sql>
+        <rollback>
+            <sql>
+                DROP TABLE tm_dev;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="10" author="milk">
+        <tagDatabase tag="insert_tm_dev"/>
+    </changeSet>
+    <changeSet id="10.1" author="milk">
+        <sql>
+            INSERT INTO tm_dev
+            VALUES
+            (1, 1),
+            (1, 2);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM tm_dev;
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

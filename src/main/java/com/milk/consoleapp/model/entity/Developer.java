@@ -51,9 +51,6 @@ public class Developer {
         this.lastName = lastName;
     }
 
-    public String getFullName() {
-        return firstName + lastName;
-    }
 
     public List<Skill> getSkills() {
         return skills;

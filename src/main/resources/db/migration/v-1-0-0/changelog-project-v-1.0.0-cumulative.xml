@@ -4,14 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--1--create-skill-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--2--insert-data-to-skill-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--3--create-developer-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--4--insert-data-to-developer-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--5--create-dev_skill-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--6--insert-data-to-dev_skill-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--7--create-team-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--8--insert-data-to-team-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--9--create-tm_dev-table.xml"/>
-    <include file="src/main/resources/db/migration/v-1-0-0/07.09.2021--10--insert-data-to-tm_dev-table.xml"/>
+    <include file="src/main/resources/db/migration/v-1-0-0/21.09.2021--1--create-insert-all-table.xml"/>
+
 </databaseChangeLog>

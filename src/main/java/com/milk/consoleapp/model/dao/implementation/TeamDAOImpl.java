@@ -1,5 +1,6 @@
 package com.milk.consoleapp.model.dao.implementation;
 
+import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.model.dao.TeamDAO;
 import com.milk.consoleapp.model.entity.Developer;
 import com.milk.consoleapp.model.entity.Skill;
@@ -17,12 +18,7 @@ import java.util.List;
  */
 public class TeamDAOImpl implements TeamDAO {
 
-    private final Connection connection;
-
-    public TeamDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
-
+    private final Connection connection = DBConnector.getConnection();
 
     @Override
     public List<Team> getAll() {
@@ -75,12 +71,6 @@ public class TeamDAOImpl implements TeamDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         return teams;
@@ -136,18 +126,12 @@ public class TeamDAOImpl implements TeamDAO {
             e.printStackTrace();
         }
 
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return team;
     }
 
     @Override
     public Team save(Team team) {
-        Team tm = null;
+        Team tm;
         int id = -1;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLTeam.SAVE_TEAM.QUERY)){
@@ -177,12 +161,6 @@ public class TeamDAOImpl implements TeamDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         tm = getById(id);
@@ -223,12 +201,6 @@ public class TeamDAOImpl implements TeamDAO {
             }
         }
 
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return getById(team.getId());
     }
 
@@ -240,12 +212,6 @@ public class TeamDAOImpl implements TeamDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
     }

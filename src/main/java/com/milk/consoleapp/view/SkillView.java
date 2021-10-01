@@ -1,6 +1,8 @@
 package com.milk.consoleapp.view;
 
 import com.milk.consoleapp.controller.SkillController;
+import com.milk.consoleapp.model.dao.implementation.SkillDAOImpl;
+import com.milk.consoleapp.model.entity.Skill;
 
 import java.util.Scanner;
 
@@ -10,7 +12,11 @@ import java.util.Scanner;
  */
 public class SkillView {
 
-    private final SkillController controller = new SkillController();
+    private final SkillController controller;
+
+    public SkillView() {
+        this.controller  = new SkillController();
+    }
 
     public void skillMenu(){
         System.out.println();
@@ -35,34 +41,24 @@ public class SkillView {
             choice = new Scanner(System.in).next();
             switch (choice.toLowerCase()) {
                 case "1":
-                    System.out.println("All Skills: ");
-                    controller.viewAllSkills();
+                    showAllSkills();
                     break;
                 case "2":
-                    controller.viewAllSkills();
-                    System.out.print("Skill By Id (enter id): ");
-                    String idSkillForView = new Scanner(System.in).next();
-                    controller.viewSkillByID(idSkillForView);
+                    showAllSkills();
+                    showSkillById();
                     break;
                 case "3":
-                    System.out.print("Enter new Skill name: ");
-                    String name = new Scanner(System.in).next();
-                    controller.save(name);
+                    showNewSkill();
                     break;
                 case "4":
-                    controller.viewAllSkills();
-                    System.out.print("Enter Id Skill for update: ");
-                    String idSkillForUpdate = new Scanner(System.in).next();
-                    System.out.print("Enter new name: ");
-                    String newName = new Scanner(System.in).next();
-                    controller.updateSkillForId(idSkillForUpdate, newName);
+                    showAllSkills();
+                    showUpdatedSkill();
+                    showAllSkills();
                     break;
                 case "5":
-                    controller.viewAllSkills();
-                    System.out.print("Delete Skill By Id (enter id): ");
-                    String idSkillForDelete = new Scanner(System.in).next();
-                    controller.deleteSkillById(idSkillForDelete);
-                    controller.viewAllSkills();
+                    showAllSkills();
+                    showDeletedSkill();
+                    showAllSkills();
                     break;
                 case "m":
                     MainView.mainView();
@@ -75,6 +71,81 @@ public class SkillView {
                     skillMenu();
                     break;
             }
+        }
+    }
+
+    public void showAllSkills(){
+        System.out.println("All Skills: ");
+        System.out.print("| Skills -> ");
+        controller.viewAllSkills().forEach(s -> System.out.print(s.getId() + ":" + s.getName() + " "));
+        System.out.println(" |");
+    }
+
+    private void showSkillById(){
+        System.out.print("Skill By Id (enter id): ");
+        String id = new Scanner(System.in).next();
+
+        try {
+            if (isDigit(id))
+                System.out.println(controller.viewSkillByID(Integer.parseInt(id)).getName());
+            else
+                System.out.println("Enter a digital designation id");
+        } catch (NullPointerException e) {
+            System.out.println("This ID does not exist");
+        }
+
+    }
+
+    private void showNewSkill(){
+        System.out.print("Enter new Skill name: ");
+        String name = new Scanner(System.in).next();
+        controller.save(new Skill(name));
+        showAllSkills();
+        System.out.println();
+    }
+
+    private void showUpdatedSkill() {
+        System.out.print("Enter Id Skill for update: ");
+        String id = new Scanner(System.in).next();
+        System.out.print("Enter new name: ");
+        String newName = new Scanner(System.in).next();
+
+        try {
+            if (isDigit(id)) {
+                int skillId = Integer.parseInt(id);
+                controller.updateSkill(new Skill(skillId, newName));
+            } else {
+                System.out.println("Enter a digital designation id");
+            }
+        } catch (NullPointerException e) {
+            System.out.println("This ID does not exist");
+        }
+
+    }
+
+    private void showDeletedSkill(){
+        System.out.print("Delete Skill By Id (enter id): ");
+        String id = new Scanner(System.in).next();
+
+        try {
+            if (isDigit(id)) {
+                int skillId = Integer.parseInt(id);
+                controller.deleteSkillById(skillId);
+            } else {
+                System.out.println("Enter a digital designation id");
+            }
+        } catch (NullPointerException e) {
+            System.out.println("This ID does not exist");
+        }
+
+    }
+
+    private boolean isDigit(String enterString) {
+        try {
+            Integer.parseInt(enterString.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 }

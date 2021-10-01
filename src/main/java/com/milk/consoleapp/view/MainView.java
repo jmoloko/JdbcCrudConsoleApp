@@ -30,8 +30,8 @@ public class MainView {
         while(!(choice.equals("1") ||
                 choice.equals("2") ||
                 choice.equals("3") ||
-                choice.toLowerCase().equals("e") ||
-                choice.toLowerCase().equals("m")))
+                choice.equalsIgnoreCase("e") ||
+                choice.equalsIgnoreCase("m")))
         {
             System.out.print("Invalid selection \n");
             System.out.print("Select option again:");

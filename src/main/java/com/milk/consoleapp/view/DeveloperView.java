@@ -1,10 +1,11 @@
 package com.milk.consoleapp.view;
 
-import com.milk.consoleapp.DBConnector;
+
 import com.milk.consoleapp.controller.DeveloperController;
 import com.milk.consoleapp.controller.SkillController;
-import com.milk.consoleapp.model.dao.SkillDAO;
 import com.milk.consoleapp.model.dao.implementation.SkillDAOImpl;
+import com.milk.consoleapp.model.entity.Developer;
+import com.milk.consoleapp.model.entity.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,6 @@ public class DeveloperView {
 
     private final DeveloperController controller = new DeveloperController();
     private final SkillController skillController = new SkillController();
-    private final DBConnector conn = DBConnector.getConnector();
-    private final SkillDAO skillRepo = new SkillDAOImpl(conn.getConnect());
 
     public void developerMenu(){
         System.out.println();
@@ -39,45 +38,30 @@ public class DeveloperView {
 
         String choice = "";
 
-        while(!(choice.toLowerCase().equals("e"))) {
+        while(!(choice.equalsIgnoreCase("e"))) {
             System.out.print("          Select option: ");
             choice = new Scanner(System.in).next();
             switch (choice.toLowerCase()) {
                 case "1":
-                    System.out.println("All Developers: ");
-                    controller.viewAllDevelopers();
+                    showAllDevelopers();
                     break;
                 case "2":
-                    controller.viewAllDevelopers();
-                    System.out.print("Developer By Id (enter id): ");
-                    String idDeveloperForView = new Scanner(System.in).next();
-                    controller.viewDeveloperByID(idDeveloperForView);
+                    showAllDevelopers();
+                    showDevById();
                     break;
                 case "3":
-                    System.out.print("Enter new  First Name: ");
-                    String firstName = new Scanner(System.in).next();
-                    System.out.print("Enter new  Last Name: ");
-                    String lastName = new Scanner(System.in).next();
-                    List<String> skillId = getSkills();
-                    controller.save(firstName, lastName, skillId);
+                    showNewDeveloper();
+                    showAllDevelopers();
                     break;
                 case "4":
-                    controller.viewAllDevelopers();
-                    System.out.print("Enter Id Developer for update: ");
-                    String idDeveloperForUpdate = new Scanner(System.in).next();
-                    System.out.print("Enter new First Name: ");
-                    String newFirstName = new Scanner(System.in).next();
-                    System.out.print("Enter new Lat Name: ");
-                    String newLastName = new Scanner(System.in).next();
-                    List<String> skillIdForUpdate = getSkills();
-                    controller.updateDeveloperForId(idDeveloperForUpdate, newFirstName, newLastName, skillIdForUpdate);
+                    showAllDevelopers();
+                    showUpdatedDev();
+                    showAllDevelopers();
                     break;
                 case "5":
-                    controller.viewAllDevelopers();
-                    System.out.print("Delete Developer By Id (enter id): ");
-                    String idDeveloperForDelete = new Scanner(System.in).next();
-                    controller.deleteDeveloperById(idDeveloperForDelete);
-                    controller.viewAllDevelopers();
+                    showAllDevelopers();
+                    showDeletedDev();
+                    showAllDevelopers();
                     break;
                 case "m":
                     MainView.mainView();
@@ -93,23 +77,113 @@ public class DeveloperView {
         }
     }
 
-    public List<String> getSkills(){
-        List<String> skillId = new ArrayList<>();
-        skillController.viewAllSkills();
+    public void showAllDevelopers(){
+        System.out.println("All Developers: ");
+        for (Developer developer: controller.viewAllDevelopers()){
+            developerToConsole(developer);
+        }
+        System.out.println();
+    }
+
+    private void developerToConsole(Developer dev){
+        System.out.print("| Developer -> id:"+ dev.getId() + " " + dev.getFirstName() + " " + dev.getLastName());
+        System.out.print(" | Skills -> ");
+        dev.getSkills().forEach(s -> System.out.print(s.getId() + ":" + s.getName() + " "));
+        System.out.println("|");
+    }
+
+    private void showDevById(){
+        System.out.print("Developer By Id (enter id): ");
+        int id = checkId();
+        Developer dev = controller.viewDeveloperByID(id);
+        developerToConsole(dev);
+    }
+
+    private void showNewDeveloper(){
+        System.out.print("Enter new  First Name: ");
+        String firstName = new Scanner(System.in).next();
+        System.out.print("Enter new  Last Name: ");
+        String lastName = new Scanner(System.in).next();
+        List<Skill> skills = getSkills();
+        controller.save(new Developer(firstName, lastName, skills));
+        System.out.println();
+    }
+
+    private void showUpdatedDev() {
+        System.out.print("Enter Id Developer for update: ");
+        int devId = checkId();
+        System.out.print("Enter new First Name: ");
+        String newFirstName = new Scanner(System.in).next();
+        System.out.print("Enter new Lat Name: ");
+        String newLastName = new Scanner(System.in).next();
+        List<Skill> skillsForUpdate = getSkills();
+        controller.updateDeveloperForId(new Developer(devId, newFirstName, newLastName, skillsForUpdate));
+    }
+
+    private void showDeletedDev(){
+        System.out.print("Delete Developer By Id (enter id): ");
+        int devId = checkId();
+        controller.deleteDeveloperById(devId);
+    }
+
+    private List<Skill> getSkills(){
+        List<Skill> skills = new ArrayList<>();
+        new SkillView().showAllSkills();
         while (true){
             System.out.println("Enter Skill id: (Write 'S' to stop)");
             String skill = new Scanner(System.in).next();
             if (skill.equalsIgnoreCase("s")) {
                 break;
             }
-            boolean isContains = skillRepo.getAll().stream().map(s -> s.getId()).collect(Collectors.toList()).contains(Integer.parseInt(skill));
+            boolean isContains = skillController.viewAllSkills()
+                    .stream().map(Skill::getId)
+                    .collect(Collectors.toList())
+                    .contains(Integer.parseInt(skill));
             if(!isContains){
                 System.out.println("This ID does not exist");
                 continue;
             }
-            skillId.add(skill);
+            skills.add(skillController.viewSkillByID(Integer.parseInt(skill)));
         }
-        return skillId;
+        return skills;
+    }
+
+    private Integer checkId() {
+        int devId;
+        while (true) {
+            System.out.println("Enter new ID: ");
+            String id = new Scanner(System.in).next();
+            try {
+                if (isDigit(id)) {
+                    boolean isContainsId = controller.viewAllDevelopers()
+                            .stream().map(Developer::getId)
+                            .collect(Collectors.toList())
+                            .contains(Integer.parseInt(id));
+                    if (isContainsId){
+                        devId = Integer.parseInt(id);
+                        break;
+                    } else {
+                        System.out.println("Does not exist developer with this ID");
+                        continue;
+                    }
+                } else {
+                    throw new NullPointerException();
+                }
+            } catch (NullPointerException e) {
+                System.out.println("This ID does not exist");
+                continue;
+            }
+        }
+        return devId;
+    }
+
+    private boolean isDigit(String enterString) {
+        try {
+            Integer.parseInt(enterString.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 }

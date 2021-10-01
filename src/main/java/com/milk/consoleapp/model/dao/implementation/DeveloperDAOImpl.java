@@ -1,5 +1,6 @@
 package com.milk.consoleapp.model.dao.implementation;
 
+import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.model.dao.DeveloperDAO;
 import com.milk.consoleapp.model.entity.Developer;
 import com.milk.consoleapp.model.entity.Skill;
@@ -13,11 +14,8 @@ import java.util.List;
  */
 public class DeveloperDAOImpl implements DeveloperDAO {
 
-    private final Connection connection;
+    private final Connection connection = DBConnector.getConnection();
 
-    public DeveloperDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
     public List<Developer> getAll() {
@@ -55,12 +53,6 @@ public class DeveloperDAOImpl implements DeveloperDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         return developers;
@@ -99,18 +91,14 @@ public class DeveloperDAOImpl implements DeveloperDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
         return developer;
     }
 
     @Override
     public Developer save(Developer developer) {
 
-        Developer dev = null;
+        Developer dev;
         int id = -1;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLDev.SAVE_DEV.QUERY)){
@@ -143,11 +131,6 @@ public class DeveloperDAOImpl implements DeveloperDAO {
             }
         }
 
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         dev = getById(id);
         return dev;
@@ -188,12 +171,6 @@ public class DeveloperDAOImpl implements DeveloperDAO {
             }
         }
 
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return getById(developer.getId());
     }
 
@@ -205,12 +182,6 @@ public class DeveloperDAOImpl implements DeveloperDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
     }

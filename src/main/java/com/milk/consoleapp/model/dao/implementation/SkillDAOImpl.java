@@ -1,5 +1,6 @@
 package com.milk.consoleapp.model.dao.implementation;
 
+import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.model.dao.SkillDAO;
 import com.milk.consoleapp.model.entity.Skill;
 
@@ -13,12 +14,7 @@ import java.util.List;
  */
 public class SkillDAOImpl implements SkillDAO {
 
-    private final Connection connection;
-
-    public SkillDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
-
+    private final Connection connection = DBConnector.getConnection();
 
     @Override
     public List<Skill> getAll() {
@@ -35,12 +31,6 @@ public class SkillDAOImpl implements SkillDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         return skills;
@@ -61,12 +51,6 @@ public class SkillDAOImpl implements SkillDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         return skill;
@@ -75,7 +59,7 @@ public class SkillDAOImpl implements SkillDAO {
     @Override
     public Skill save(Skill skill) {
 
-        Skill newSkill = null;
+        Skill newSkill;
         int id = -1;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLSkill.SAVE.QUERY)){
@@ -93,12 +77,6 @@ public class SkillDAOImpl implements SkillDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         newSkill = getById(id);
@@ -107,7 +85,7 @@ public class SkillDAOImpl implements SkillDAO {
 
     @Override
     public Skill update(Skill skill) {
-        Skill updatedSkill = null;
+        Skill updatedSkill;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLSkill.UPDATE.QUERY)){
 
@@ -117,12 +95,6 @@ public class SkillDAOImpl implements SkillDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         updatedSkill = getById(skill.getId());
         return updatedSkill;
@@ -135,12 +107,6 @@ public class SkillDAOImpl implements SkillDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 

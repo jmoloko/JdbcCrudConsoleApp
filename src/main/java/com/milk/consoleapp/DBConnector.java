@@ -11,24 +11,15 @@ public class DBConnector {
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
-    private static DBConnector instance;
+    private static Connection DATABASE_CONNECTION;;
 
     private DBConnector() {}
 
-    public static DBConnector getConnector() {
-        if (instance == null){
-            instance = new DBConnector();
-        }
-        return instance;
-    }
-
-    private static Connection DB_CONNECT;
-
-    public Connection getConnect() {
+    public static Connection getConnection() {
         try {
-            if (DB_CONNECT == null || DB_CONNECT.isClosed()) {
+            if (DATABASE_CONNECTION == null || DATABASE_CONNECTION.isClosed()) {
                 try {
-                    DB_CONNECT = DriverManager.getConnection(
+                    DATABASE_CONNECTION = DriverManager.getConnection(
                             DATABASE_URL,
                             USER,
                             PASSWORD
@@ -40,6 +31,6 @@ public class DBConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return DB_CONNECT;
+        return DATABASE_CONNECTION;
     }
 }
