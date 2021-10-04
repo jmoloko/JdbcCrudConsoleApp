@@ -42,7 +42,8 @@ public class SkillDAOImplTest {
 
         when(skillDAO.getAll()).thenReturn(Lists.newArrayList(new Skill(1, "Java"), new Skill(2, "Python")));
         assertEquals(2, controller.viewAllSkills().size());
-        verify(skillDAO).getAll();
+        assertEquals("Python", controller.viewAllSkills().get(1).getName());
+        verify(skillDAO, atMost(3)).getAll();
 
     }
 
@@ -51,8 +52,8 @@ public class SkillDAOImplTest {
 
         when(skillDAO.save(skill)).thenReturn(skill);
         assertEquals("Test", controller.save(skill).getName());
-        assertTrue(1 == skill.getId());
-        verify(skillDAO).save(skill);
+        assertTrue(1 == controller.save(skill).getId());
+        verify(skillDAO, times(2)).save(skill);
 
     }
 
