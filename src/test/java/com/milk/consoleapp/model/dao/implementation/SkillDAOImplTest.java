@@ -26,7 +26,7 @@ public class SkillDAOImplTest {
     @InjectMocks
     private SkillController controller;
 
-    Skill skill = new Skill(1, "Test");
+    private final Skill skill = new Skill(1, "Test");
 
     @Test
     public void testGetSkillByID() {
@@ -52,7 +52,7 @@ public class SkillDAOImplTest {
 
         when(skillDAO.save(skill)).thenReturn(skill);
         assertEquals("Test", controller.save(skill).getName());
-        assertTrue(1 == controller.save(skill).getId());
+        assertEquals(1, (int) controller.save(skill).getId());
         verify(skillDAO, times(2)).save(skill);
 
     }
