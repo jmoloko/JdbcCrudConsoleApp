@@ -14,8 +14,8 @@ public class DeveloperController {
     private final DeveloperDAO developer;
 
 
-    public DeveloperController() {
-        this.developer = new DeveloperDAOImpl();
+    public DeveloperController(DeveloperDAO dao) {
+        this.developer = dao;
     }
 
     public List<Developer> viewAllDevelopers(){

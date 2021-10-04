@@ -14,8 +14,8 @@ public class SkillController {
 
     private final SkillDAO skill;
 
-    public SkillController() {
-        this.skill = new SkillDAOImpl();
+    public SkillController(SkillDAO dao) {
+        this.skill = dao;
     }
 
     public List<Skill> viewAllSkills() {

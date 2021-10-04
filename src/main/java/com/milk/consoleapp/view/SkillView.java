@@ -17,7 +17,7 @@ public class SkillView {
     private final SkillController controller;
 
     public SkillView() {
-        this.controller  = new SkillController();
+        this.controller  = new SkillController(new SkillDAOImpl());
     }
 
     public void skillMenu(){

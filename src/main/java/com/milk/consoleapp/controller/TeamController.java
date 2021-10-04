@@ -16,8 +16,8 @@ public class TeamController {
 
     private final TeamDAO team;
 
-    public TeamController() {
-        this.team = new TeamDAOImpl();
+    public TeamController(TeamDAO dao) {
+        this.team = dao;
     }
 
     public List<Team> viewAllTeams(){

@@ -3,6 +3,8 @@ package com.milk.consoleapp.view;
 import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.controller.DeveloperController;
 import com.milk.consoleapp.controller.TeamController;
+import com.milk.consoleapp.model.dao.implementation.DeveloperDAOImpl;
+import com.milk.consoleapp.model.dao.implementation.TeamDAOImpl;
 import com.milk.consoleapp.model.entity.Developer;
 import com.milk.consoleapp.model.entity.Skill;
 import com.milk.consoleapp.model.entity.Team;
@@ -16,8 +18,8 @@ import java.util.stream.Collectors;
  */
 public class TeamView {
 
-    private final TeamController controller = new TeamController();
-    private final DeveloperController developerController = new DeveloperController();
+    private final TeamController controller = new TeamController(new TeamDAOImpl());
+    private final DeveloperController developerController = new DeveloperController(new DeveloperDAOImpl());
 
     public void teamMenu(){
         System.out.println();

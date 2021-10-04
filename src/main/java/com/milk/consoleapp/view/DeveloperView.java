@@ -4,6 +4,7 @@ package com.milk.consoleapp.view;
 import com.milk.consoleapp.DBConnector;
 import com.milk.consoleapp.controller.DeveloperController;
 import com.milk.consoleapp.controller.SkillController;
+import com.milk.consoleapp.model.dao.implementation.DeveloperDAOImpl;
 import com.milk.consoleapp.model.dao.implementation.SkillDAOImpl;
 import com.milk.consoleapp.model.entity.Developer;
 import com.milk.consoleapp.model.entity.Skill;
@@ -19,8 +20,8 @@ import java.util.stream.Collectors;
  */
 public class DeveloperView {
 
-    private final DeveloperController controller = new DeveloperController();
-    private final SkillController skillController = new SkillController();
+    private final DeveloperController controller = new DeveloperController(new DeveloperDAOImpl());
+    private final SkillController skillController = new SkillController(new SkillDAOImpl());
 
     public void developerMenu(){
         System.out.println();
