@@ -1,5 +1,6 @@
 ### JdbcCrudConsoleApp
 
+[![Build Status](https://app.travis-ci.com/jmoloko/JdbcCrudConsoleApp.svg?branch=main)](https://app.travis-ci.com/jmoloko/JdbcCrudConsoleApp)
 [![codecov](https://codecov.io/gh/jmoloko/JdbcCrudConsoleApp/branch/main/graph/badge.svg?token=WF48JU6HL6)](https://codecov.io/gh/jmoloko/JdbcCrudConsoleApp)
 
 Console CRUD application that interacts with the database and allows you to perform all CRUD operations on entities:
