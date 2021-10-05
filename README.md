@@ -1,5 +1,7 @@
 ### JdbcCrudConsoleApp
 
+[![codecov](https://codecov.io/gh/jmoloko/JdbcCrudConsoleApp/branch/main/graph/badge.svg?token=WF48JU6HL6)](https://codecov.io/gh/jmoloko/JdbcCrudConsoleApp)
+
 Console CRUD application that interacts with the database and allows you to perform all CRUD operations on entities:
 * Team (id, name, List <Developer> developers)
 * Developer (id, firstName, lastName, List <Skill> skills)
