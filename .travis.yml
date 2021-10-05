@@ -11,3 +11,7 @@ notifications:
       - jackmoloko@yandex.ru
     on_success: never
     on_failure: always
+
+env:
+  global:
+    - CODECOV_TOKEN='2f717990-9ba8-4e82-8dee-e54783fc2b76'
